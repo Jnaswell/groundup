@@ -1,0 +1,211 @@
+[gd_scene load_steps=18 format=3 uid="uid://bvfg5fkpt28e5"]
+
+[ext_resource type="Script" uid="uid://brff60oemrse" path="res://scripts/player.gd" id="1_ysjsl"]
+[ext_resource type="Script" uid="uid://ru0k5vnrloct" path="res://scripts/gun_hand.gd" id="2_dyykf"]
+[ext_resource type="PackedScene" uid="uid://ui8dt2vlrh7h" path="res://guns_ammo_health/gungoshoot.blend" id="3_cp8kr"]
+[ext_resource type="Script" uid="uid://doiivwqnbs86n" path="res://guns_ammo_health/ammo_bar_gradient.gd" id="4_cp8kr"]
+[ext_resource type="Script" uid="uid://dca2b5il325op" path="res://scenes/health_bar.gd" id="5_v7ull"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gx283"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hwxp3"]
+height = 1.2
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_dyykf"]
+viewport_path = NodePath("head/Camera3D/gun_hand/gungoshoot/ammo/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cp8kr"]
+bg_color = Color(0, 0, 0, 0.65098)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v7ull"]
+bg_color = Color(0.0301273, 0.157366, 0.884244, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6ujl3"]
+viewport_path = NodePath("head/Camera3D/gun_hand/gungoshoot/health/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ujl3"]
+bg_color = Color(0, 0, 0, 0.670588)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7igj3"]
+bg_color = Color(0.147971, 0.428181, 0, 1)
+
+[sub_resource type="Animation" id="Animation_v7ull"]
+resource_name = "take_damage"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("head/Camera3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0346945, 0.0721645, 0.122125, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.122173, 0, -0.139626), Vector3(-0.122173, 0, 0.10472), Vector3(-0.0523599, 0, -0.10472), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6ujl3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("head/Camera3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xyche"]
+_data = {
+&"RESET": SubResource("Animation_6ujl3"),
+&"take_damage": SubResource("Animation_v7ull")
+}
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v7ull"]
+
+[node name="player" type="CharacterBody3D" groups=["player"]]
+collision_layer = 265
+collision_mask = 265
+script = ExtResource("1_ysjsl")
+
+[node name="stand_collision_shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00119305, 1.09089, -0.0065403)
+shape = SubResource("CapsuleShape3D_gx283")
+debug_color = Color(0.137255, 0.776471, 0, 1)
+
+[node name="crouch_collision_shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.622896, -0.0341961)
+shape = SubResource("CapsuleShape3D_hwxp3")
+disabled = true
+debug_color = Color(0.414381, 0.597817, 0.418337, 1)
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="Camera3D" type="Camera3D" parent="head"]
+cull_mask = 1
+current = true
+
+[node name="hand" type="Marker3D" parent="head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00488281, -1.90753)
+
+[node name="Generic6DOFJoint3D" type="Generic6DOFJoint3D" parent="head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.89565)
+node_a = NodePath("../StaticBody3D")
+linear_limit_x/enabled = false
+linear_limit_y/enabled = false
+linear_limit_z/enabled = false
+angular_limit_z/enabled = false
+
+[node name="StaticBody3D" type="StaticBody3D" parent="head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00488281, -1.90753)
+collision_layer = 4
+collision_mask = 4
+
+[node name="interaction" type="RayCast3D" parent="head/Camera3D"]
+target_position = Vector3(0, 0, -5)
+collision_mask = 256
+
+[node name="gun_hand" type="Node3D" parent="head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.29, 1.55)
+script = ExtResource("2_dyykf")
+default_positon = Vector3(0.65, -0.56, 1.16)
+ads_position = Vector3(0, -0.29, 1.55)
+
+[node name="gungoshoot" parent="head/Camera3D/gun_hand" instance=ExtResource("3_cp8kr")]
+transform = Transform3D(-0.22, 0, -3.32191e-08, 0, 0.22, 0, 3.32191e-08, 0, -0.22, 0, 0, -2.02363)
+
+[node name="gun_barrel" type="RayCast3D" parent="head/Camera3D/gun_hand/gungoshoot"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.38419e-07, 0.499718, 2.89683)
+target_position = Vector3(0, 0, -5)
+
+[node name="ammo" type="Sprite3D" parent="head/Camera3D/gun_hand/gungoshoot"]
+transform = Transform3D(0.29, -2.46298e-08, 1.3125e-08, 1.78566e-08, 0.365231, -0.407788, 3.80633e-09, 0.163115, 0.913077, 8.42252e-08, 0.594233, -0.5578)
+texture = SubResource("ViewportTexture_dyykf")
+
+[node name="SubViewport" type="SubViewport" parent="head/Camera3D/gun_hand/gungoshoot/ammo"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 256)
+render_target_update_mode = 4
+
+[node name="ammo_bar" type="ProgressBar" parent="head/Camera3D/gun_hand/gungoshoot/ammo/SubViewport"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -28.0
+offset_right = 32.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_cp8kr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_v7ull")
+max_value = 10.0
+value = 10.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("4_cp8kr")
+
+[node name="health" type="Sprite3D" parent="head/Camera3D/gun_hand/gungoshoot"]
+transform = Transform3D(0.4, -2.80195e-08, 1.01814e-08, 3.02913e-08, 0.320103, -0.250763, 8.14516e-09, 0.185565, 0.432571, 9.98808e-08, 0.381226, -0.661483)
+texture = SubResource("ViewportTexture_6ujl3")
+
+[node name="SubViewport" type="SubViewport" parent="head/Camera3D/gun_hand/gungoshoot/health"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 256)
+render_target_update_mode = 4
+
+[node name="health_bar" type="ProgressBar" parent="head/Camera3D/gun_hand/gungoshoot/health/SubViewport"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -28.0
+offset_right = 32.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_6ujl3")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7igj3")
+max_value = 5.0
+value = 5.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("5_v7ull")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 2.1, 0)
+
+[node name="fire_delay_timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_xyche")
+}
+speed_scale = 0.5
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 17
+collision_mask = 17
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1.06, 0, 0, 0, 1.06, 0, 0, 0, 1.06, 0, 1.1014, 0)
+shape = SubResource("CapsuleShape3D_v7ull")
+debug_color = Color(0.960784, 0, 0, 1)
+
+[connection signal="value_changed" from="head/Camera3D/gun_hand/gungoshoot/ammo/SubViewport/ammo_bar" to="head/Camera3D/gun_hand/gungoshoot/ammo/SubViewport/ammo_bar" method="_on_value_changed"]
+[connection signal="value_changed" from="head/Camera3D/gun_hand/gungoshoot/health/SubViewport/health_bar" to="head/Camera3D/gun_hand/gungoshoot/health/SubViewport/health_bar" method="_on_value_changed"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

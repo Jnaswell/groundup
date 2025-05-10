@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://b1xt745aew0s7"]
+
+[ext_resource type="Script" uid="uid://dsfh80bnsi6ea" path="res://guns_ammo_health/bullet.gd" id="1_v7oki"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v8qja"]
+albedo_color = Color(1, 1, 0.298039, 1)
+emission_enabled = true
+emission = Color(0.86545, 0.769339, 0.326585, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_t4vbm"]
+material = SubResource("StandardMaterial3D_v8qja")
+radius = 0.2
+height = 0.4
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_v7oki"]
+direction = Vector3(1, -2, 5)
+initial_velocity_min = 3.0
+initial_velocity_max = 45.76
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t4vbm"]
+albedo_color = Color(0.992157, 1, 0.733333, 1)
+emission_enabled = true
+emission = Color(0.878431, 0.878431, 0.501961, 1)
+emission_energy_multiplier = 6.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_2b2rl"]
+material = SubResource("StandardMaterial3D_t4vbm")
+size = Vector3(0.04, 0.04, 0.1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v7oki"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_v7oki")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.6, 0, 0, 0, -1.18458e-07, -0.6, 0, 2.71, -2.62268e-08, 0, 0, 0)
+layers = 9
+mesh = SubResource("CapsuleMesh_t4vbm")
+
+[node name="RayCast3D" type="RayCast3D" parent="MeshInstance3D"]
+transform = Transform3D(19.9995, 2.38124e-06, 0.006686, -0.13372, -8.82581e-07, 0.999978, 2.38709e-06, -20, -4.33321e-08, 0, 0.879339, 0.0933696)
+target_position = Vector3(0, 0, -2)
+collision_mask = 9
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.53944)
+emitting = false
+amount = 25
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_v7oki")
+draw_pass_1 = SubResource("BoxMesh_2b2rl")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Area3D" type="Area3D" parent="." groups=["bullet"]]
+collision_layer = 9
+collision_mask = 9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(2.55, 0, 0, 0, -1.11464e-07, -2.55, 0, 2.55, -1.11464e-07, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_v7oki")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

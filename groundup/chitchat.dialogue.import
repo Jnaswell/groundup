@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://rrr1i2pub523"
+path="res://.godot/imported/chitchat.dialogue-fa97f1ab6d52f424d996f212145cce3f.tres"
+
+[deps]
+
+source_file="res://chitchat.dialogue"
+dest_files=["res://.godot/imported/chitchat.dialogue-fa97f1ab6d52f424d996f212145cce3f.tres"]
+
+[params]
+
+defaults=true

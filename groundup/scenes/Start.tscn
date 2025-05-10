@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=3 uid="uid://d4jawk7hj03wn"]
+
+[ext_resource type="Script" uid="uid://dxbqkoamxtmog" path="res://scripts/menu.gd" id="1_8t08e"]
+[ext_resource type="FontFile" uid="uid://bqwef6rkbuke6" path="res://addons/game_over.ttf" id="2_j3bqk"]
+
+[sub_resource type="Theme" id="Theme_fx3ca"]
+
+[sub_resource type="Theme" id="Theme_yx83k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fx3ca"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_j3bqk"]
+
+[sub_resource type="Theme" id="Theme_lynlw"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_fx3ca")
+script = ExtResource("1_8t08e")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_yx83k")
+
+[node name="Panel" type="Panel" parent="MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fx3ca")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Start" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_j3bqk")
+theme_override_font_sizes/font_size = 150
+text = "start"
+
+[node name="Controls" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_j3bqk")
+theme_override_fonts/font = ExtResource("2_j3bqk")
+theme_override_font_sizes/font_size = 150
+text = "controls"
+
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_lynlw")
+theme_override_fonts/font = ExtResource("2_j3bqk")
+theme_override_font_sizes/font_size = 150
+text = "quit"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

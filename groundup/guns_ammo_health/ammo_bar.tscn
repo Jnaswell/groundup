@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://cp8qfd6ct2h44"]
+
+[ext_resource type="Script" uid="uid://doiivwqnbs86n" path="res://guns_ammo_health/ammo_bar_gradient.gd" id="1_fqmch"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ery6"]
+
+[node name="SubViewportContainer" type="SubViewportContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 256)
+render_target_update_mode = 4
+
+[node name="ammo_bar" type="ProgressBar" parent="SubViewport"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -28.0
+offset_right = 32.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_5ery6")
+max_value = 5.0
+value = 5.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("1_fqmch")
+
+[connection signal="value_changed" from="SubViewport/ammo_bar" to="SubViewport/ammo_bar" method="_on_value_changed"]
